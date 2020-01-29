@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+
+#-------------Add_ubuntu_VM---------------
+  config.vm.define "Ubuntu" do |ub|
+    ub.vm.box = "ubuntu/bionic64"
+    ub.vm.network "forwarded_port", guest: 80, host: 8080
+    ub.vm.hostname = "ubuntu"
+    ub.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+    ub.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y apache2
+      SHELL
+  end
+
+#-------------CentOS_VM---------------
+  config.vm.define "CentOS" do |cent|
+    cent.vm.box = "centos/7"
+    cent.vm.hostname = "centos"
+    cent.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+  end
+
+end
